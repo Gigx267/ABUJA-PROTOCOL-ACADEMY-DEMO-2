@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Our Faculty | Abuja Protocol Academy | Distinguished Experts</title>
+    <link rel="icon" href="logo.jpg" type="image/svg+xml">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #a4a1a1;
+            --gold-muted: rgba(212, 175, 55, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1;
+            filter: brightness(0.3) grayscale(0.5);
+        }
+        
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--black) 95%);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- NAVIGATION --- */
+        .header-nav {
+            position: sticky;
+            top: 25px;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 100px;
+            padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-color: var(--gold-muted);
+            transform: scale(0.98);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #FFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            z-index: 1101;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 0.8rem;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-links > li { position: relative; }
+
+        .nav-link-item {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        /* --- DROPDOWN --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0F0F0F;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 240px;
+            padding: 15px 0;
+            margin-top: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        @media (min-width: 769px) {
+            .nav-links li:hover .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 25px;
+            color: #AAA;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            padding-left: 30px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1101;
+            padding: 10px;
+        }
+
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+            }
+            .dropdown-menu.mobile-open { display: block; }
+            .dropdown-menu a { font-size: 0.9rem; text-align: center; color: var(--gold); }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* Instructor / Faculty Classes Hero */
+        .faculty-hero {
+            padding: 120px 0 60px;
+            max-width: 900px;
+        }
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            line-height: 1.1;
+            font-weight: 900;
+            margin-bottom: 25px;
+        }
+        .faculty-intro {
+            color: #BBB;
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Classes Grid - each card represents a class of instructor */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 40px;
+            margin: 60px 0 80px;
+        }
+        .class-card {
+            background: var(--dark-grey);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .class-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-8px);
+        }
+        .class-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            filter: grayscale(0.2) brightness(0.7);
+            transition: var(--transition);
+        }
+        .class-card:hover .class-img {
+            filter: grayscale(0) brightness(0.85);
+            transform: scale(1.02);
+        }
+        .class-info {
+            padding: 28px 26px;
+        }
+        .class-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .class-subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+        .class-description {
+            font-size: 0.85rem;
+            color: #AAA;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .expertise-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .expertise-tag {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .quote-section {
+            background: rgba(10,10,10,0.6);
+            border-left: 4px solid var(--gold);
+            padding: 40px;
+            margin: 40px 0 60px;
+            border-radius: 28px;
+        }
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        .quote-author {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+        }
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: #555;
+            font-family: 'Space Mono';
+        }
+        @media (max-width: 680px) {
+            .quote-text { font-size: 1.1rem; }
+            .class-img { height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-bg">
+    <img src="https://i.pinimg.com/1200x/b5/f3/27/b5f327c997aa92ed14631e7397652817.jpg" alt="Diplomatic Hall">
+</div>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="logo.jpg" alt="APA Logo" style="max-width: 100%; height: auto;"></div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">
+                        PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i>
+                    </a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+                <li><a href="instructor.html" class="nav-link-item" style="color:var(--gold);">INSTRUCTORS</a></li>
+                   <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">  HOW TO APPLY  </a></li>
+                
+                <li><a href="contact.html" class="nav-link-item">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section: Focus on classes of instructors -->
+    <section class="faculty-hero">
+        <span class="hero-tag">✦ THE MINDS BEHIND THE EXCELLENCE ✦</span>
+        <h1>Classes of <span style="color: var(--gold)">Distinguished Faculty</span></h1>
+        <p class="faculty-intro">Our academy brings together an unparalleled assembly of expertise. Each class of instructors represents a pillar of global protocol, diplomacy, and refined service — from seasoned Ambassadors and career diplomats to internationally certified etiquette masters and hospitality visionaries. Together they form a faculty dedicated to shaping Africa’s next generation of leaders.</p>
+        <p class="faculty-intro">Every educator is a practitioner with decades of real-world experience at presidential palaces, United Nations assemblies, five-star global establishments, and high-level diplomatic missions. They don't just teach protocol — they embody its highest standard.</p>
+    </section>
+
+    <!-- Classes Grid: Representing categories of instructors (no personal names) -->
+    <div class="classes-grid">
+        <!-- Class 1: Ambassadors & Career Diplomats -->
+        <div class="class-card">
+            <img class="class-img" src=" https://i.pinimg.com/736x/db/66/41/db6641a0df77521e47192c9b6cc0d101.jpg" alt="Ambassadors and Career Diplomats">
+            <div class="class-info">
+                <h3 class="class-title">Ambassadors & Career Diplomats</h3>
+                <span class="class-subtitle">Former UN Envoys • Chiefs of Protocol</span>
+                <p class="class-description">This distinguished class comprises former ambassadors, high commissioners, and career foreign service officers with decades of service across multilateral missions. They bring authentic insight into diplomatic negotiations, state visits, treaty protocols, and the art of representation at the highest levels of government.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">UN & Multilateral Protocol</span>
+                    <span class="expertise-tag">State Ceremonies</span>
+                    <span class="expertise-tag">Diplomatic Immunity</span>
+                    <span class="expertise-tag">Treaty Negotiations</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class 2: Etiquette & Soft Skills Grandmasters -->
+        <div class="class-card">
+            <img class="class-img" src="https://i.pinimg.com/736x/2b/7d/f3/2b7df361d85b27a49bf789d0208962b0.jpg" alt="Etiquette & Soft Skills Grandmasters">
+            <div class="class-info">
+                <h3 class="class-title">Etiquette & Soft Skills Grandmasters</h3>
+                <span class="class-subtitle">IAPC Certified • Cross-Cultural Specialists</span>
+                <p class="class-description">Internationally certified etiquette experts and executive presence coaches who have trained diplomatic corps, corporate boards, and royalty across Europe, the Middle East, and Africa. Their mastery spans business etiquette, dining refinement, social graces, and personal branding for high-stakes environments.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">Dining Etiquette</span>
+                    <span class="expertise-tag">Executive Presence</span>
+                    <span class="expertise-tag">Cross-Cultural Intelligence</span>
+                    <span class="expertise-tag">Social Protocol</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class 3: Hospitality & Luxury Service Directors -->
+        <div class="class-card">
+            <img class="class-img" src="https://i.pinimg.com/1200x/eb/45/85/eb45857391e965c1feb07146e0529443.jpg" alt="Hospitality & Luxury Service Directors">
+            <div class="class-info">
+                <h3 class="class-title">Hospitality & Luxury Service Directors</h3>
+                <span class="class-subtitle">Ex-Ritz Carlton • Five-Star Specialists</span>
+                <p class="class-description">A cadre of hospitality veterans who have led operations in world-renowned hotels, private members' clubs, and VIP guest services. They lead our Hospitality Elite and Cabin Crew workshops with expertise in guest psychology, service recovery, luxury experience design, and front-line excellence.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">Luxury Service Standards</span>
+                    <span class="expertise-tag">Guest Relations</span>
+                    <span class="expertise-tag">Event Operations</span>
+                    <span class="expertise-tag">Crisis Hospitality</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class 4: Diplomatic Trainers & International Affairs Experts -->
+        <div class="class-card">
+            <img class="class-img" src="https://i.pinimg.com/736x/a0/00/5b/a0005b70d18432ecc08dec71e68d0442.jpg " alt="Diplomatic Trainers & International Affairs">
+            <div class="class-info">
+                <h3 class="class-title">Diplomatic Trainers & International Affairs Experts</h3>
+                <span class="class-subtitle">AU Advisors • Conflict-Sensitive Specialists</span>
+                <p class="class-description">Former advisors to the African Union, ECOWAS, and international development organizations. These faculty members bring deep expertise in African diplomatic protocols, multilateral negotiation, diplomatic communication strategies, and gender-inclusive diplomacy for government officials.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">African Union Protocol</span>
+                    <span class="expertise-tag">Multilateral Diplomacy</span>
+                    <span class="expertise-tag">Conflict Communication</span>
+                    <span class="expertise-tag">Policy Advisory</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class 5: Youth Protocol & Leadership Coaches -->
+        <div class="class-card">
+            <img class="class-img" src="https://i.pinimg.com/736x/f4/68/be/f468be71e4678ecbb2f5a93c86d9d78d.jpg" alt="Youth Protocol & Leadership Coaches">
+            <div class="class-info">
+                <h3 class="class-title">Youth Protocol & Leadership Coaches</h3>
+                <span class="class-subtitle">Certified Youth Etiquette • NextGen Mentors</span>
+                <p class="class-description">Specialists in youth development, social graces for young leaders, and early-career diplomacy. This class focuses on shaping confident, globally aware teenagers and young professionals through interactive workshops, public speaking training, and citizenship education aligned with global etiquette standards.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">Youth Etiquette</span>
+                    <span class="expertise-tag">Leadership Presence</span>
+                    <span class="expertise-tag">Public Speaking</span>
+                    <span class="expertise-tag">Mentorship</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class 6: Crisis Management & Security Protocol Experts -->
+        <div class="class-card">
+            <img class="class-img" src="https://i.pinimg.com/1200x/c6/d9/1c/c6d91cd086e249780af8c7f99812e7ea.jpg" alt="Crisis Management & Security Protocol Experts">
+            <div class="class-info">
+                <h3 class="class-title">Crisis Management & Security Protocol Experts</h3>
+                <span class="class-subtitle">Former Security Advisors • VIP Protection</span>
+                <p class="class-description">A specialized faculty class comprised of former security advisors, diplomatic protection specialists, and crisis communication strategists. They train organizations in emergency response, dignitary security, media relations under pressure, and high-risk event management with discretion and precision.</p>
+                <div class="expertise-tags">
+                    <span class="expertise-tag">VIP Protection</span>
+                    <span class="expertise-tag">Crisis Communication</span>
+                    <span class="expertise-tag">Event Security</span>
+                    <span class="expertise-tag">Risk Assessment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inspirational Quote from Faculty Leadership (generic) -->
+    <div class="quote-section">
+        <div class="quote-text">
+            <i class="fas fa-quote-left" style="color: var(--gold); margin-right: 12px;"></i> 
+            Protocol is not about rigid rules — it is the architecture of respect. Our faculty has represented nations on the world stage; they return to Abuja to impart not just knowledge, but the confidence to navigate any diplomatic or corporate environment with distinction.
+        </div>
+        <div class="quote-author">— Dean of Faculty, Abuja Protocol Academy</div>
+    </div>
+
+    <!-- Additional section: distinction of faculty classes -->
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; margin: 40px 0 60px;">
+        <div style="flex:1; background: var(--dark-grey); border-radius: 24px; padding: 32px; border: 1px solid rgba(212,175,55,0.1);">
+            <i class="fas fa-globe-africa" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px; display: block;"></i>
+            <h3 style="font-family: 'Playfair Display'; margin-bottom: 15px;">Global Diplomatic Pedigree</h3>
+            <p style="color: #AAA; line-height: 1.6; font-size: 0.85rem;">Our ambassadors and career diplomats have served in missions across New York, Geneva, London, Addis Ababa, and Paris. They bring real-world case studies from G20 summits, ECOWAS negotiations, and state banquets.</p>
+        </div>
+        <div style="flex:1; background: var(--dark-grey); border-radius: 24px; padding: 32px; border: 1px solid rgba(212,175,55,0.1);">
+            <i class="fas fa-champagne-glasses" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px; display: block;"></i>
+            <h3 style="font-family: 'Playfair Display'; margin-bottom: 15px;">Hospitality & Etiquette Authorities</h3>
+            <p style="color: #AAA; line-height: 1.6; font-size: 0.85rem;">From Michelin-star service directors to certified etiquette consultants (IAPC, The English Manner), our experts have trained royal households, luxury hotel groups, and corporate executives across four continents.</p>
+        </div>
+        <div style="flex:1; background: var(--dark-grey); border-radius: 24px; padding: 32px; border: 1px solid rgba(212,175,55,0.1);">
+            <i class="fas fa-chalkboard-user" style="font-size: 2rem; color: var(--gold); margin-bottom: 20px; display: block;"></i>
+            <h3 style="font-family: 'Playfair Display'; margin-bottom: 15px;">Mentorship & Practical Immersion</h3>
+            <p style="color: #AAA; line-height: 1.6; font-size: 0.85rem;">Every faculty class is committed to mentorship, offering scenario-based workshops, live simulations of diplomatic events, and personalized feedback that ensures lasting behavioural transformation.</p>
+        </div>
+    </div>
+
+    <!-- CTA for consulting / custom training -->
+    <div style="text-align: center; margin: 20px 0 60px; background: rgba(212,175,55,0.02); border-radius: 32px; padding: 40px 24px;">
+        <h2 style="font-family: 'Playfair Display'; margin-bottom: 16px;">Learn from the Best in Their Class</h2>
+        <p style="color: #BBB; max-width: 600px; margin: 0 auto 28px;">Engage with our distinguished faculty — ambassadors, etiquette grandmasters, hospitality directors — through our upcoming masterclasses or bespoke corporate training.</p>
+        <a href="#" style="display: inline-block; padding: 14px 36px; border: 1.5px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; transition: var(--transition);">✦ EXPLORE FACULTY CLASSES ✦</a>
+    </div>
+
+    <footer>
+        <div>© 2026 ABUJA PROTOCOL ACADEMY</div>
+        <div style="color: var(--gold)">DIPLOMATIC EXCELLENCE • WORLD-CLASS FACULTY</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    if (programsToggle) {
+        programsToggle.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                programsDropdown.classList.toggle('mobile-open');
+            }
+        });
+    }
+
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            if(programsDropdown) programsDropdown.classList.remove('mobile-open');
+        });
+    });
+</script>
+</body>
+</html>

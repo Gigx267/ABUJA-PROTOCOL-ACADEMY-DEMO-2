@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Programmes | Abuja Protocol Academy</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #c5a028;
+            --gold-muted: rgba(197, 160, 40, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0,0,0,0.9), #010101);
+            z-index: -2;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* NAVIGATION */
+        .header-nav { position: sticky; top: 25px; z-index: 1000; margin-bottom: 40px; }
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px);
+            border-radius: 100px; padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08); transition: var(--transition);
+        }
+        .navbar.scrolled { background: rgba(0, 0, 0, 0.96); border-color: var(--gold-muted); transform: scale(0.98); }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #FFF; font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(0.7rem, 2vw, 1rem); }
+        .logo-icon { width: 32px; height: 32px; background: var(--gold); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; color: black; font-size: 0.8rem; overflow: hidden; }
+        .logo-icon img { width: 100%; height: auto; object-fit: cover; }
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-link-item { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; padding: 12px 20px; border-radius: 50px; transition: var(--transition); display: flex; align-items: center; gap: 5px; }
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: #0F0F0F; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 240px; padding: 15px 0; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        @media (min-width: 769px) { .nav-links li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); } }
+        .dropdown-menu a { display: block; padding: 12px 25px; color: #AAA; text-decoration: none; font-size: 0.7rem; transition: 0.3s; }
+        .dropdown-menu a:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); padding-left: 30px; }
+        .menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1101; padding: 10px; }
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); flex-direction: column; justify-content: center; transition: 0.6s cubic-bezier(0.19,1,0.22,1); }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; display: none; background: transparent; border: none; box-shadow: none; padding: 0; margin-top: 0; width: 100%; }
+            .dropdown-menu.mobile-open { display: block; }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* page hero */
+        .program-hero { margin: 60px 0 40px; border-left: 4px solid var(--gold); padding-left: 30px; }
+        .hero-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 900; line-height: 1.1; margin: 15px 0 20px; }
+        .section-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 60px 0; }
+        
+        /* card styles */
+        .program-category { margin-bottom: 70px; }
+        .category-title { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; border-bottom: 1px solid var(--gold); display: inline-block; padding-bottom: 6px; }
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; margin-top: 35px; }
+        .course-card { background: var(--dark-grey); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
+        .course-card:hover { border-color: var(--gold); transform: translateY(-6px); }
+        .card-content { padding: 28px; flex: 1; }
+        .course-icon { font-size: 2rem; color: var(--gold); margin-bottom: 18px; }
+        .course-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.2px; }
+        .course-highlight { color: #aaa; font-size: 0.75rem; font-family: 'Space Mono'; margin-bottom: 15px; display: inline-block; background: rgba(197,160,40,0.15); padding: 4px 12px; border-radius: 40px; }
+        .course-desc { color: #BBB; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px; }
+        .module-list { list-style: none; margin: 15px 0; }
+        .module-list li { font-size: 0.75rem; padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); display: flex; align-items: baseline; gap: 8px; }
+        .module-list li i { color: var(--gold); font-size: 0.6rem; margin-top: 4px; }
+        .duration-badge { margin-top: 20px; font-weight: 600; font-size: 0.85rem; color: var(--gold); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .duration-badge i { font-size: 0.9rem; }
+        .tag-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+        .tag { background: rgba(197,160,40,0.1); border-radius: 50px; padding: 4px 12px; font-size: 0.65rem; color: var(--gold); }
+        
+        .intensive-row { background: rgba(0,0,0,0.4); border-radius: 28px; padding: 40px; margin: 40px 0; border: 1px solid rgba(197,160,40,0.2); }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        @media (max-width: 800px) { .two-column { grid-template-columns: 1fr; } .intensive-row { padding: 25px; } }
+        
+        .footer { padding: 40px 0; border-top: 1px solid #222; display: flex; justify-content: space-between; font-size: 0.6rem; color: #555; font-family: 'Space Mono'; margin-top: 60px; }
+        .btn-outline-gold { display: inline-block; padding: 10px 24px; border: 1px solid var(--gold); color: var(--gold); font-size: 0.7rem; font-weight: 600; text-decoration: none; transition: 0.3s; border-radius: 40px; margin-top: 12px; text-align: center; letter-spacing: 1px; background: transparent; cursor: pointer; }
+        .btn-outline-gold:hover { background: var(--gold); color: black; }
+        .no-price { font-size: 0.75rem; color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="logo.jpg" alt="APA Logo" style="max-width: 100%; height: auto;"></div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i></a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+                <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">HOW TO APPLY</a></li>
+                <li><a href="instructor.html" class="nav-link-item">INSTRUCTORS</a></li>
+                <li><a href="contact.html" class="nav-link-item">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="program-hero">
+        <span class="hero-tag">✦ FLAGSHIP PROGRAMMES & COURSES ✦</span>
+        <h1>Master Protocol,<br>Shape Global <span style="color: var(--gold)">Influence</span>.</h1>
+        <p style="color: #BBB; max-width: 700px;">Internationally benchmarked, Nigeria-focused. From government diplomacy to executive presence, our academy delivers transformational training. All programs are designed as intensive 3-day learning experiences.</p>
+    </div>
+
+    <!-- 1. Certificate & Diploma Programmes (3 days) -->
+    <div class="program-category">
+        <h2 class="category-title">📜 Certificate & Diploma Programmes</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Diploma in Protocol & Event Management</h3>
+                    <div class="course-highlight">Intensive • 3 Days • In-person/Hybrid</div>
+                    <p class="course-desc">Comprehensive training for protocol officers, executive assistants & diplomats. Capstone project and industry-ready simulations.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Nigerian protocol history & principles</li>
+                        <li><i class="fas fa-check-circle"></i> Government & diplomatic protocol, order of precedence</li>
+                        <li><i class="fas fa-check-circle"></i> Business etiquette, cross-cultural communication</li>
+                        <li><i class="fas fa-check-circle"></i> Crisis management, digital conduct & leadership</li>
+                        <li><i class="fas fa-check-circle"></i> Capstone project & practical assessments</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Immersive Training)</div>
+                    <div class="tag-group"><span class="tag">Recognised certification</span><span class="tag">Diploma track</span></div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-certificate"></i></div>
+                    <h3>Certificate in Professional Etiquette & Protocol</h3>
+                    <div class="course-highlight">Intensive • 3 Days</div>
+                    <p class="course-desc">Foundational expertise for corporate professionals, hospitality staff & emerging leaders. Ideal for career acceleration.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Workplace etiquette & communication mastery</li>
+                        <li><i class="fas fa-check-circle"></i> VIP guest handling & event coordination</li>
+                        <li><i class="fas fa-check-circle"></i> Personal branding & professional image</li>
+                        <li><i class="fas fa-check-circle"></i> Nigerian cultural values & international protocol</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Comprehensive)</div>
+                    <div class="tag-group"><span class="tag">Group bookings welcome</span><span class="tag">Flexible scheduling</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Youth Protocol Program (3 Days) -->
+    <div class="program-category">
+        <h2 class="category-title">🌟 Youth Protocol Program (NextGen Leaders)</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-child"></i></div>
+                    <h3>Youth Leadership & Etiquette Camp</h3>
+                    <div class="course-highlight">3-Day Intensive • Ages 13-19</div>
+                    <p class="course-desc">Builds confidence, social skills, and leadership for young people. Interactive workshops, roleplays & mentorship.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Social & communication etiquette, digital responsibility</li>
+                        <li><i class="fas fa-check-circle"></i> Dining manners, public place etiquette</li>
+                        <li><i class="fas fa-check-circle"></i> Interview skills, professional image basics</li>
+                        <li><i class="fas fa-check-circle"></i> Nigerian cultural values & active citizenship</li>
+                        <li><i class="fas fa-check-circle"></i> Teamwork & community engagement projects</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Leadership Immersion)</div>
+                    <div class="tag-group"><span class="tag">Schools/groups welcome</span><span class="tag">Mentorship included</span></div>
+                    <a href="#" class="btn-outline-gold">Empower youth →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Short Courses & Workshops (All 3 Days) -->
+    <div class="program-category">
+        <h2 class="category-title">⚡ Short Courses & Intensive Workshops</h2>
+        <div class="course-grid">
+            <!-- Hospitality Protocol & Guest Management -->
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-hotel"></i></div>
+                    <h3>Hospitality Protocol & Elite Guest Management</h3>
+                    <div class="course-highlight">3-Day Workshop</div>
+                    <p class="course-desc">Master VIP handling, event excellence, concierge service & cultural intelligence for hotels, embassies, and luxury brands.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> VIP dignitary handling & seating precedence</li>
+                        <li><i class="fas fa-check-circle"></i> Formal reception, table settings & RSVP protocol</li>
+                        <li><i class="fas fa-check-circle"></i> Front desk mastery & special request management</li>
+                        <li><i class="fas fa-check-circle"></i> Real-life simulations & group feedback</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Practical Masterclass)</div>
+                </div>
+            </div>
+            <!-- Crisis Management Workshop -->
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Crisis Management & Emergency Response</h3>
+                    <div class="course-highlight">3-Day Intensive Workshop</div>
+                    <p class="course-desc">Anticipate, respond, recover from crises. For protocol officers, security leads, and management teams.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Crisis psychology & leadership decision-making</li>
+                        <li><i class="fas fa-check-circle"></i> Crisis communication, media & stakeholder mgmt</li>
+                        <li><i class="fas fa-check-circle"></i> Planning, simulations & post-crisis recovery</li>
+                        <li><i class="fas fa-check-circle"></i> Risk assessment & command structures</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Simulation-Driven)</div>
+                    <div class="tag-group"><span class="tag">Custom group training available</span></div>
+                </div>
+            </div>
+            <!-- Cabin Crew Workshop -->
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-plane"></i></div>
+                    <h3>Cabin Crew / Air Hostess Preparation</h3>
+                    <div class="course-highlight">3-Day Intensive • Practical drills & simulations</div>
+                    <p class="course-desc">Launch your aviation career. Safety procedures, passenger service, grooming, and aviation standards.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Aircraft familiarisation, fire & evacuation drills</li>
+                        <li><i class="fas fa-check-circle"></i> First aid, difficult passenger handling</li>
+                        <li><i class="fas fa-check-circle"></i> Crew resource management & professionalism</li>
+                        <li><i class="fas fa-check-circle"></i> Aviation medicine & compliance standards</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Career Launchpad)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Customised Corporate Training (3 Day Format) -->
+    <div class="intensive-row">
+        <h2 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 16px;">🎯 Customised Corporate Training</h2>
+        <p style="color: #CCC; margin-bottom: 28px;">Bespoke protocol solutions for government ministries, corporations, NGOs, and hospitality groups. We co-create curriculum that addresses your precise operational challenges. All custom programs are delivered as intensive 3-day experiences tailored to your organisation.</p>
+        <div class="two-column">
+            <div>
+                <h3 style="color: var(--gold); font-size: 1.2rem;">How It Works</h3>
+                <ul style="list-style: none; margin-top: 15px;">
+                    <li style="margin-bottom: 12px;"><i class="fas fa-chalkboard-user" style="color: var(--gold); width: 24px;"></i> 1. Needs assessment & consultation</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-pen-ruler" style="color: var(--gold);"></i> 2. Custom curriculum design (select modules)</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-laptop-house" style="color: var(--gold);"></i> 3. 3-day on-site, online, or hybrid delivery</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-certificate" style="color: var(--gold);"></i> 4. Assessment & APA certification</li>
+                </ul>
+                <div class="duration-badge" style="border-top: none; margin-top: 15px;"><i class="fas fa-clock"></i> Standard Format: 3 Days (Immersive)</div>
+            </div>
+            <div>
+                <h3 style="color: var(--gold); font-size: 1.2rem;">Sample Custom Modules</h3>
+                <div class="tag-group" style="margin-top: 12px;">
+                    <span class="tag">Govt Protocol & Etiquette</span>
+                    <span class="tag">VIP Security & Guest Logistics</span>
+                    <span class="tag">Diplomatic Writing</span>
+                    <span class="tag">Cross-Cultural Communication</span>
+                    <span class="tag">Executive Presence</span>
+                    <span class="tag">Crisis Communication</span>
+                </div>
+                <div class="duration-badge" style="margin-top: 20px;"><i class="fas fa-users"></i> Group Training • 3-Day Intensive Format</div>
+                <a href="#" class="btn-outline-gold" style="margin-top: 15px; display: inline-block;">Request a proposal →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Protocol Officer Course (3-Day Intensive) -->
+    <div class="program-category">
+        <h2 class="category-title">🎓 Protocol Officer Certification</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-user-tie"></i></div>
+                    <h3>Intensive Protocol Officer Certification</h3>
+                    <div class="course-highlight">3-Day Immersive • In-person/Hybrid</div>
+                    <p class="course-desc">Develop well-rounded protocol officers for government, diplomatic missions, and corporate HQs. Deep-dive with practical simulations.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Foundations & ethics of protocol</li>
+                        <li><i class="fas fa-check-circle"></i> Communication, etiquette & official correspondence</li>
+                        <li><i class="fas fa-check-circle"></i> Cross-cultural awareness & international guests</li>
+                        <li><i class="fas fa-check-circle"></i> Event planning, VIP handling, seating & precedence</li>
+                        <li><i class="fas fa-check-circle"></i> Risk assessment, crisis preparedness & emergency response</li>
+                        <li><i class="fas fa-check-circle"></i> Professional image, digital etiquette</li>
+                        <li><i class="fas fa-check-circle"></i> Capstone project & certification ceremony</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Comprehensive Certification)</div>
+                    <div class="tag-group"><span class="tag">Group discounts available</span><span class="tag">Guest lectures from diplomats</span></div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="card-content">
+                    <div class="course-icon"><i class="fas fa-chalkboard"></i></div>
+                    <h3>Specialised Protocol Modules</h3>
+                    <div class="course-highlight">3-Day Focused Workshops</div>
+                    <p class="course-desc">Targeted training on specific areas: Official protocol, cross-cultural business etiquette, media relations, and event security.</p>
+                    <ul class="module-list">
+                        <li><i class="fas fa-check-circle"></i> Flag protocol & order of precedence</li>
+                        <li><i class="fas fa-check-circle"></i> Formal dining & international table manners</li>
+                        <li><i class="fas fa-check-circle"></i> Diplomatic correspondence & memo drafting</li>
+                        <li><i class="fas fa-check-circle"></i> Crisis communication simulation</li>
+                    </ul>
+                    <div class="duration-badge"><i class="far fa-calendar-alt"></i> Duration: 3 Days (Specialised Focus)</div>
+                    <div class="tag-group"><span class="tag">Certificates awarded</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unique Features & Target Audience -->
+    <div class="intensive-row" style="background: rgba(0,0,0,0.5);">
+        <div class="two-column">
+            <div>
+                <h3 style="font-family: 'Playfair Display'; font-size: 1.5rem;">✨ Why Choose Abuja Protocol Academy</h3>
+                <ul style="margin-top: 20px; list-style: none;">
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> 100% Nigerian-focused content with real-life case studies</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> Faculty: experienced diplomats, business leaders & traditional authorities</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> Practical simulations, role-plays & industry placements</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> Recognised certification for career advancement</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> Partnerships with govt, corporate, and hospitality sectors</li>
+                    <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color: var(--gold);"></i> All programs delivered in intensive 3-day format for maximum impact</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="font-family: 'Playfair Display'; font-size: 1.5rem;">👥 Target Audience</h3>
+                <div class="tag-group" style="margin-top: 20px;">
+                    <span class="tag">Government & diplomatic staff</span>
+                    <span class="tag">Corporate executives</span>
+                    <span class="tag">Hospitality professionals</span>
+                    <span class="tag">Youth & students (13+)</span>
+                    <span class="tag">Event planners & coordinators</span>
+                    <span class="tag">Administrative & executive assistants</span>
+                </div>
+                <div class="duration-badge" style="margin-top: 30px; border-top: none;"><i class="fas fa-gem"></i> All programs include comprehensive materials, certificate, and expert facilitation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact & Next Steps -->
+    <div style="margin: 60px 0 30px; text-align: center; background: rgba(197,160,40,0.03); border-radius: 32px; padding: 45px 25px;">
+        <i class="fas fa-handshake" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; display: inline-block;"></i>
+        <h2 style="font-family: 'Playfair Display'; font-size: 2rem;">Transform Your Professional Presence</h2>
+        <p style="max-width: 700px; margin: 15px auto; color: #BBB;">All programs are delivered as intensive 3-day learning experiences, combining theory with practical simulations. Customised corporate training, group bookings, and in-house sessions available.</p>
+        <div class="tag-group" style="justify-content: center; margin: 20px 0;">
+            <span class="tag">3-Day intensive format</span>
+            <span class="tag">Expert facilitators</span>
+            <span class="tag">Recognised certification</span>
+            <span class="tag">Practical simulations</span>
+        </div>
+        <a href="#" class="btn-outline-gold" style="padding: 12px 38px; margin-top: 10px;">✦ ENQUIRE NOW ✦</a>
+        <p style="font-size: 0.7rem; margin-top: 25px; color: #666;">Contact Abuja Protocol Academy: admissions@abujaprotocol.edu.ng | +234 (0) 803 000 1111</p>
+    </div>
+
+    <footer class="footer">
+        <div>© 2026 ABUJA PROTOCOL ACADEMY — Diplomatic Excellence</div>
+        <div style="color: var(--gold)">APA // 3-Day Intensive Programs</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+    window.addEventListener('scroll', () => { if (window.scrollY > 40) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+    menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+    programsToggle.addEventListener('click', (e) => { if (window.innerWidth <= 768) { e.preventDefault(); programsDropdown.classList.toggle('mobile-open'); } });
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => { link.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('active'); programsDropdown.classList.remove('mobile-open'); }); });
+</script>
+</body>
+</html>

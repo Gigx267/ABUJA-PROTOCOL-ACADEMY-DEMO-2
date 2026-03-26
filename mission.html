@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Our Mission | Abuja Protocol Academy | Defining Integrity</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #a4a1a1;
+            --gold-muted: rgba(212, 175, 55, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1;
+            filter: brightness(0.3) grayscale(0.5);
+        }
+        
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--black) 95%);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- NAVIGATION --- */
+        .header-nav {
+            position: sticky;
+            top: 25px;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 100px;
+            padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-color: var(--gold-muted);
+            transform: scale(0.98);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #FFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            z-index: 1101;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 0.8rem;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-links > li { position: relative; }
+
+        .nav-link-item {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        /* --- DROPDOWN --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0F0F0F;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 240px;
+            padding: 15px 0;
+            margin-top: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        @media (min-width: 769px) {
+            .nav-links li:hover .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 25px;
+            color: #AAA;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            padding-left: 30px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1101;
+            padding: 10px;
+        }
+
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+            }
+            .dropdown-menu.mobile-open { display: block; }
+            .dropdown-menu a { font-size: 0.9rem; text-align: center; color: var(--gold); }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* Page Hero */
+        .mission-hero {
+            padding: 120px 0 50px;
+            max-width: 900px;
+        }
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            line-height: 1.1;
+            font-weight: 900;
+            margin-bottom: 25px;
+        }
+        .lead-statement {
+            color: #BBB;
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--gold);
+            padding-left: 24px;
+        }
+
+        /* Vision & Objective Grid */
+        .vision-objective {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 60px 0 50px;
+        }
+        .vision-card, .objective-card {
+            background: var(--dark-grey);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 28px;
+            padding: 40px 32px;
+            transition: var(--transition);
+        }
+        .vision-card:hover, .objective-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            width: 65px;
+            height: 65px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        .card-icon i {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+        .vision-card h2, .objective-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+        .vision-card p, .objective-card p {
+            color: #BBB;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Three Pillars (APA Distinction) */
+        .pillars-section {
+            margin: 60px 0 60px;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+        }
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .pillar-card {
+            background: var(--dark-grey);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .pillar-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+        }
+        .pillar-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(212, 175, 55, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+        .pillar-icon i {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+        .pillar-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+        .pillar-card p {
+            color: #AAA;
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+
+        /* Faculty Section (World-Class Faculty) */
+        .faculty-showcase {
+            margin: 70px 0 60px;
+            background: rgba(10,10,10,0.4);
+            border-radius: 32px;
+            padding: 50px 40px;
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+        .faculty-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        .faculty-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .faculty-tagline {
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .faculty-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .faculty-type {
+            background: var(--dark-grey);
+            padding: 20px 32px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(212,175,55,0.2);
+            transition: var(--transition);
+        }
+        .faculty-type i {
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+        .faculty-type span {
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .faculty-type:hover {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            background: rgba(212,175,55,0.05);
+        }
+
+        @media (max-width: 900px) {
+            .vision-objective {
+                grid-template-columns: 1fr;
+            }
+            .pillars-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .faculty-showcase {
+                padding: 40px 20px;
+            }
+        }
+        @media (max-width: 600px) {
+            .pillar-card {
+                padding: 28px 20px;
+            }
+            .faculty-type {
+                padding: 12px 24px;
+            }
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: #555;
+            font-family: 'Space Mono';
+            margin-top: 40px;
+        }
+        .cta-mini {
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+        .cta-mini a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.7rem;
+            border-bottom: 1px solid var(--gold);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-bg">
+    <img src="logo.jpg" alt="Diplomatic Hall">
+</div>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="logo.jpg" alt="APA Logo" style="max-width: 100%; height: auto;"></div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">
+                        PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i>
+                    </a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+               
+                   <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">  HOW TO APPLY  </a></li>
+                <li><a href="instructor.html" class="nav-link-item">  INSTRUCTORS </a></li>
+               
+                <li><a href="contact.html" class="nav-link-item">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero: Defining the Standard of Professional Integrity -->
+    <section class="mission-hero">
+        <span class="hero-tag">✦ DEFINING EXCELLENCE ✦</span>
+        <h1>Defining the Standard of<br><span style="color: var(--gold)">Professional Integrity.</span></h1>
+        <p class="lead-statement">At Abuja Protocol Academy, integrity is not merely a principle — it is the foundation of every interaction, every training module, and every graduate we shape. We set the benchmark for diplomatic conduct, ethical leadership, and refined professionalism across Nigeria and beyond.</p>
+    </section>
+
+    <!-- Vision & Business Objective -->
+    <div class="vision-objective">
+        <div class="vision-card">
+            <div class="card-icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <h2>Our Vision</h2>
+            <p>To make Abuja Protocol Academy the gold standard for protocol and etiquette education in Nigeria, empowering individuals and organisations to excel with confidence, respect, and cultural pride.</p>
+        </div>
+        <div class="objective-card">
+            <div class="card-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h2>Business Objective</h2>
+            <p>To equip professionals and youth with world-class protocol, etiquette, event management, and crisis response skills. We support excellence through internationally benchmarked training, building competence and leadership in every participant.</p>
+        </div>
+    </div>
+
+    <!-- The APA Distinction: Three Core Pillars -->
+    <div class="pillars-section">
+        <div class="section-header">
+            <div class="section-tag">✦ THE APA DISTINCTION ✦</div>
+            <h2 class="section-title">What sets us apart is our unwavering commitment<br>to three core pillars.</h2>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3>Bespoke Customisation</h3>
+                <p>We believe no two organizations are the same. Our programs are meticulously tailored to meet specific institutional needs, ensuring immediate practical impact.</p>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3>Youth Empowerment</h3>
+                <p>Investing in the next generation. We provide youth with the soft skills and etiquette required to navigate global professional environments with ease.</p>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <i class="fas fa-flag-checkered"></i>
+                </div>
+                <h3>Nigerian-Focused Content</h3>
+                <p>We fuse international standards with deep Nigerian cultural insights, ensuring our training is relevant, respectful, and effective in a local context.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- World-Class Faculty Section -->
+    <div class="faculty-showcase">
+        <div class="faculty-header">
+            <div class="faculty-tagline">✦ WORLD-CLASS FACULTY ✦</div>
+            <h2>Practical. Relevant. Globally Aligned.</h2>
+            <p style="color: #AAA; max-width: 600px; margin: 15px auto 0;">Our faculty comprises seasoned diplomats, high-level business leaders, and traditional authorities. This diverse expertise ensures that every training session culminates in a recognized certification that carries weight both locally and internationally.</p>
+        </div>
+        <div class="faculty-grid">
+            <div class="faculty-type">
+                <i class="fas fa-globe-africa"></i>
+                <span>EXPERIENCED DIPLOMATS</span>
+            </div>
+            <div class="faculty-type">
+                <i class="fas fa-chart-simple"></i>
+                <span>BUSINESS LEADERS</span>
+            </div>
+            <div class="faculty-type">
+                <i class="fas fa-landmark"></i>
+                <span>TRADITIONAL AUTHORITIES</span>
+            </div>
+        </div>
+        <div class="cta-mini">
+            <a href="instructors.html">✦ MEET OUR FACULTY CLASSES ✦</a>
+        </div>
+    </div>
+
+    <!-- Additional Integrity Statement / Core Commitment -->
+    <div style="margin: 40px 0 20px; padding: 20px 0; text-align: center; border-top: 1px solid rgba(212,175,55,0.1); border-bottom: 1px solid rgba(212,175,55,0.1);">
+        <p style="color: #888; font-size: 0.8rem; max-width: 750px; margin: 0 auto;"><i class="fas fa-quote-left" style="color: var(--gold); margin-right: 8px;"></i> Our commitment to professional integrity, cultural authenticity, and measurable impact makes Abuja Protocol Academy the partner of choice for governments, corporations, and aspiring leaders across Africa.</p>
+    </div>
+
+    <footer>
+        <div>© 2026 ABUJA PROTOCOL ACADEMY</div>
+        <div style="color: var(--gold)">INTEGRITY • EXCELLENCE • CULTURAL PRIDE</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    if (programsToggle) {
+        programsToggle.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                programsDropdown.classList.toggle('mobile-open');
+            }
+        });
+    }
+
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            if(programsDropdown) programsDropdown.classList.remove('mobile-open');
+        });
+    });
+</script>
+</body>
+</html>

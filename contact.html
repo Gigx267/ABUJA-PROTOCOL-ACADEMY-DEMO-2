@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Contact Us | Abuja Protocol Academy</title>
+    <link rel="icon" href="logo.jpg" type="image/svg+xml">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #a2a19b;
+            --gold-muted: rgba(201, 165, 44, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1;
+            filter: brightness(0.3) grayscale(0.5);
+        }
+        
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--black) 95%);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- NAVIGATION --- */
+        .header-nav {
+            position: sticky;
+            top: 25px;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 100px;
+            padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            border-color: var(--gold-muted);
+            transform: scale(0.98);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #FFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            z-index: 1101;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 0.8rem;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-links > li { position: relative; }
+
+        .nav-link-item {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        /* --- DROPDOWN --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0F0F0F;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 240px;
+            padding: 15px 0;
+            margin-top: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        @media (min-width: 769px) {
+            .nav-links li:hover .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 25px;
+            color: #AAA;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            padding-left: 30px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1101;
+            padding: 10px;
+        }
+
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0;
+                width: 100%;
+            }
+            .dropdown-menu.mobile-open { display: block; }
+            .dropdown-menu a { font-size: 0.9rem; text-align: center; color: var(--gold); }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* Contact Page Hero */
+        .contact-hero {
+            padding: 140px 0 40px;
+            max-width: 800px;
+        }
+        .contact-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            line-height: 1.1;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+        .contact-hero p {
+            color: #BBB;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Contact Grid Layout */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            margin: 60px 0 80px;
+        }
+
+        /* Contact Info Cards */
+        .contact-info {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 40px;
+            border: 1px solid rgba(201, 165, 44, 0.15);
+        }
+
+        .info-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .info-sub {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        .contact-detail-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .contact-detail-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .contact-icon {
+            width: 55px;
+            height: 55px;
+            background: rgba(201, 165, 44, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .contact-icon i {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+        .contact-detail-card:hover .contact-icon {
+            background: rgba(201, 165, 44, 0.2);
+            transform: scale(1.05);
+        }
+        .detail-text h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .detail-text a, .detail-text p {
+            color: #CCC;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            word-break: break-all;
+        }
+        .detail-text a:hover {
+            color: var(--gold);
+        }
+        .email-link {
+            font-size: 0.85rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Contact Form */
+        .contact-form-container {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 40px;
+            border: 1px solid rgba(201, 165, 44, 0.2);
+        }
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        .form-sub {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 14px 20px;
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(0,0,0,0.7);
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .submit-btn {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .submit-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+        .form-note {
+            font-size: 0.65rem;
+            color: #666;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Map Section */
+        .map-section {
+            margin: 40px 0 60px;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid rgba(201, 165, 44, 0.2);
+        }
+        .map-placeholder {
+            background: #1a1a1a;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            gap: 15px;
+        }
+        .map-placeholder i {
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.6;
+        }
+
+        /* Office Hours */
+        .hours-section {
+            background: rgba(18, 18, 18, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .hours-section h4 {
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .hours-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .hour-item {
+            font-size: 0.8rem;
+        }
+        .hour-item span {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: #555;
+            font-family: 'Space Mono';
+            margin-top: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .contact-info, .contact-form-container {
+                padding: 30px;
+            }
+        }
+        @media (max-width: 600px) {
+            .contact-hero { padding: 100px 0 30px; }
+            .contact-info, .contact-form-container { padding: 25px; }
+            .contact-detail-card { gap: 15px; }
+            .detail-text a { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-bg">
+    <img src="https://i.pinimg.com/736x/76/fa/60/76fa60f1e8025d6d4ab3f2aa30311153.jpg" alt="Diplomatic Background">
+</div>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="logo.jpg" alt="APA Logo" style="max-width: 100%; height: auto;">
+                </div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">
+                        PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i>
+                    </a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+                <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">HOW TO APPLY</a></li>
+                <li><a href="instructor.html" class="nav-link-item">INSTRUCTORS</a></li>
+                <li><a href="contact.html" class="nav-link-item cta-nav" style="color: var(--gold);">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contact Hero -->
+    <section class="contact-hero">
+        <span class="hero-tag">✦ CONNECT WITH EXCELLENCE ✦</span>
+        <h1>Let's <span style="color: var(--gold)">Elevate</span> Your Protocol Journey</h1>
+        <p>Reach out to our diplomatic liaison team for inquiries about our programs, partnerships, or bespoke corporate training. We are committed to responding within 24 hours.</p>
+    </section>
+
+    <!-- Main Contact Grid -->
+    <div class="contact-grid">
+        <!-- Left: Contact Information -->
+        <div class="contact-info">
+            <h2 class="info-title">Reach <span style="color: var(--gold);">Us</span></h2>
+            <p class="info-sub">Our headquarters are located in Abuja, with a global network serving dignitaries and organizations worldwide. Choose your preferred channel.</p>
+            
+            <!-- Email Card -->
+            <div class="contact-detail-card">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="detail-text">
+                    <h3>OFFICIAL EMAIL</h3>
+                    <a href="mailto:INFO@ABUJAPROTOCOLACADEMY.COM.NG" class="email-link">INFO@ABUJAPROTOCOLACADEMY.COM.NG</a>
+                    <p style="font-size: 0.7rem; margin-top: 5px; color: #777;">For general inquiries, admissions, and partnerships</p>
+                </div>
+            </div>
+            
+            <!-- Phone Card -->
+            <div class="contact-detail-card">
+                <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="detail-text">
+                    <h3>CONTACT LINE</h3>
+                    <a href="tel:+2348077773537">+234 (0) 807 777 3537</a>
+                    <p style="font-size: 0.7rem; margin-top: 5px; color: #777;">Available Mon-Fri: 9:00 AM - 5:00 PM (WAT)</p>
+                </div>
+            </div>
+            
+            <!-- Additional Support -->
+           
+        </div>
+
+        <!-- Right: Contact Form -->
+        <div class="contact-form-container">
+            <h2 class="form-title">Send a <span style="color: var(--gold);">Message</span></h2>
+            <p class="form-sub">Fill out the form below and our protocol liaison will connect with you shortly.</p>
+            
+            <form id="contactForm" action="#" method="POST">
+                <div class="input-group">
+                    <input type="text" name="fullname" placeholder="Full Name *" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Email Address *" required>
+                </div>
+                <div class="input-group">
+                    <input type="tel" name="phone" placeholder="Phone Number (Optional)">
+                </div>
+                <div class="input-group">
+                    <select name="inquiryType">
+                        <option value="" disabled selected>Select Inquiry Type</option>
+                        <option>Program Enrollment</option>
+                        <option>Corporate Training</option>
+                        <option>Partnership / Sponsorship</option>
+                        <option>Media & Press</option>
+                        <option>General Inquiry</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <textarea name="message" placeholder="Your Message *" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">✦ SUBMIT INQUIRY ✦</button>
+                <p class="form-note"><i class="fas fa-lock" style="margin-right: 5px;"></i> Your information is kept confidential and secure.</p>
+            </form>
+            <div id="formFeedback" style="margin-top: 15px; text-align: center; font-size: 0.8rem;"></div>
+        </div>
+    </div>
+
+    <!-- Map Section (Styled Location) -->
+  
+
+    <!-- Office Hours & Social Preview -->
+    <div class="hours-section">
+        <h4>OFFICE HOURS</h4>
+        <div class="hours-grid">
+            <div class="hour-item"><span>Monday - Thursday:</span> 9:00 AM – 5:00 PM</div>
+            <div class="hour-item"><span>Friday:</span> 9:00 AM – 1:00 PM</div>
+            <div class="hour-item"><span>Saturday - Sunday:</span> Closed (Emergency support via email)</div>
+        </div>
+        <div style="margin-top: 25px; display: flex; justify-content: center; gap: 25px; font-size: 1.2rem;">
+            
+        </div>
+    </div>
+
+    <footer>
+        <div>© 2026 ABUJA PROTOCOL ACADEMY | RC: 8849916</div>
+        <div style="color: var(--gold)">EXCELLENCE • INTEGRITY • PRECISION</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    programsToggle.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+            programsDropdown.classList.toggle('mobile-open');
+        }
+    });
+
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            if(programsDropdown) programsDropdown.classList.remove('mobile-open');
+        });
+    });
+
+    // Simple form submission handling (simulated, since no backend)
+    const contactForm = document.getElementById('contactForm');
+    const feedbackDiv = document.getElementById('formFeedback');
+    
+    if(contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '✦ SENDING... ✦';
+            submitBtn.disabled = true;
+            
+            // Simulate sending (since it's static HTML, we show success message)
+            setTimeout(() => {
+                feedbackDiv.innerHTML = '<span style="color: var(--gold);"><i class="fas fa-check-circle"></i> Thank you for reaching out! Our diplomatic liaison team will respond within 24 hours.</span>';
+                contactForm.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                setTimeout(() => {
+                    feedbackDiv.innerHTML = '';
+                }, 6000);
+            }, 1200);
+        });
+    }
+</script>
+
+</body>
+</html>

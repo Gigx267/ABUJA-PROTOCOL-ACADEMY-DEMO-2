@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Abuja Protocol Academy | Hospitality Protocol & Guest Management Workshop</title>
+     <link rel="icon" href="logo.jpg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #a4a1a1;
+            --gold-muted: rgba(212, 175, 55, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1;
+            filter: brightness(0.3) grayscale(0.4);
+        }
+        
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--black) 95%);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- NAVIGATION --- */
+        .header-nav { position: sticky; top: 25px; z-index: 1000; }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 100px;
+            padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled { background: rgba(0, 0, 0, 0.95); border-color: var(--gold-muted); transform: scale(0.98); }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #FFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            z-index: 1101;
+        }
+
+        .logo-icon { width: 32px; height: 32px; background: var(--gold); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; color: black; font-size: 0.8rem; }
+        .logo-icon img { max-width: 100%; height: auto; }
+
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-link-item {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0F0F0F;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 240px;
+            padding: 15px 0;
+            margin-top: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+        @media (min-width: 769px) {
+            .nav-links li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        }
+        .dropdown-menu a { display: block; padding: 12px 25px; color: #AAA; text-decoration: none; font-size: 0.7rem; transition: 0.3s; }
+        .dropdown-menu a:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); padding-left: 30px; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1101; padding: 10px; }
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; display: none; background: transparent; border: none; box-shadow: none; padding: 0; margin-top: 0; width: 100%; }
+            .dropdown-menu.mobile-open { display: block; }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* page specific */
+        .hero-section { padding: 120px 0 60px; max-width: 900px; }
+        .section-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); display: inline-block; margin-bottom: 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .gold-text { color: var(--gold); }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 40px; margin: 50px 0; }
+        .info-card { background: rgba(18,18,18,0.7); border-left: 3px solid var(--gold); padding: 28px; border-radius: 16px; backdrop-filter: blur(4px); transition: var(--transition); }
+        .info-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+        .info-card h3 { font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; }
+        .info-card p, .info-card li { color: #CCC; font-size: 0.85rem; line-height: 1.6; }
+        .learning-list { list-style: none; margin-top: 15px; }
+        .learning-list li { margin-bottom: 12px; display: flex; gap: 12px; align-items: baseline; }
+        .learning-list li i { color: var(--gold); font-size: 0.7rem; margin-top: 4px; min-width: 20px; }
+        
+        .image-showcase { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 50px 0; }
+        .showcase-img { border-radius: 20px; overflow: hidden; height: 220px; }
+        .showcase-img img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); filter: brightness(0.75); }
+        .showcase-img:hover img { filter: brightness(1); transform: scale(1.03); }
+        
+        .workshop-timeline { background: var(--dark-grey); border-radius: 28px; padding: 35px; margin: 50px 0; border: 1px solid rgba(255,255,255,0.05); }
+        .timeline-item { display: flex; gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .timeline-day { min-width: 80px; font-family: 'Space Mono'; font-weight: 700; color: var(--gold); font-size: 1.1rem; }
+        .timeline-content h4 { font-size: 1rem; margin-bottom: 8px; }
+        .timeline-content p { font-size: 0.8rem; color: #AAA; line-height: 1.5; }
+        
+        .badge-duration { background: rgba(212,175,55,0.2); display: inline-block; padding: 5px 14px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; margin-top: 10px; }
+        .two-col-split { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin: 50px 0; background: var(--dark-grey); border-radius: 28px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); }
+        .cta-block { text-align: center; margin: 60px 0 40px; background: linear-gradient(145deg, #0e0e0e, #050505); border-radius: 40px; padding: 50px 30px; border: 1px solid rgba(212,175,55,0.2); }
+        .btn-outline { display: inline-block; padding: 12px 32px; border: 1.5px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; margin-top: 20px; font-weight: 700; }
+        .btn-outline:hover { background: var(--gold); color: black; }
+        footer { padding: 40px 0; border-top: 1px solid #222; display: flex; justify-content: space-between; font-size: 0.6rem; color: #555; font-family: 'Space Mono'; margin-top: 40px; }
+        
+        @media (max-width: 768px) { .info-grid, .two-col-split { grid-template-columns: 1fr; } .image-showcase { grid-template-columns: 1fr; } .timeline-item { flex-direction: column; gap: 8px; } .timeline-day { min-width: auto; } }
+        
+        .highlight-box { background: rgba(212,175,55,0.05); border-radius: 20px; padding: 25px; margin: 30px 0; border: 1px solid rgba(212,175,55,0.2); }
+        .modules-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 25px 0; }
+        .module-tag { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.25); padding: 8px 20px; border-radius: 50px; font-size: 0.7rem; font-weight: 500; }
+    </style>
+</head>
+<body>
+<div class="hero-bg">
+    <img src="https://i.pinimg.com/736x/45/23/68/45236890ee6510e13b9b3fa58d6a8616.jpg " alt="Luxury hospitality background">
+</div>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="logo.jpg" alt="APA Logo"></div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i></a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+                   <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">  HOW TO APPLY  </a></li>
+                <li><a href="instructor.html" class="nav-link-item">  INSTRUCTORS </a></li>
+                <li><a href="contact.html" class="nav-link-item cta-nav">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+        <span class="section-tag">✦ HOSPITALITY EXCELLENCE ✦</span>
+        <h1>Hospitality Protocol & <span class="gold-text">Guest Management</span> Workshop</h1>
+        <p style="color:#BBB; font-size:1rem; line-height:1.6;">An immersive, practical program designed for hospitality professionals, front-of-house teams, and event managers. Master the art of VIP handling, cross-cultural guest relations, and flawless service execution across all touchpoints of the guest journey.</p>
+        <a href="#enquire" class="btn-outline" style="margin-top:25px;">✦ DOWNLOAD PROGRAM BROCHURE ✦ </a>
+    </section>
+
+    <!-- image gallery -->
+    <div class="image-showcase">
+        <div class="showcase-img"><img src="https://i.pinimg.com/736x/15/8a/df/158adfeb52629f0ae989a3a69967f6f7.jpg " alt="VIP guest reception"></div>
+        <div class="showcase-img"><img src="https://i.pinimg.com/1200x/1a/8b/67/1a8b67330200355588b7e01aa234f568.jpg " alt="Fine dining table setting"></div>
+        <div class="showcase-img"><img src="https://i.pinimg.com/1200x/44/ad/48/44ad4814f1db3cbc6a5fa83d5bbc304f.jpg " alt="Concierge service"></div>
+    </div>
+
+    <!-- workshop overview -->
+    <div class="info-grid">
+        <div class="info-card">
+            <h3><i class="fas fa-star-of-life"></i> Who Should Attend</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-check-circle"></i> Hotel general managers & front desk supervisors</li>
+                <li><i class="fas fa-check-circle"></i> Event planners & banquet managers</li>
+                <li><i class="fas fa-check-circle"></i> Concierge teams & guest relations officers</li>
+                <li><i class="fas fa-check-circle"></i> Luxury brand ambassadors & hospitality executives</li>
+                <li><i class="fas fa-check-circle"></i> Government hospitality liaison officers</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3><i class="fas fa-calendar-alt"></i> Program Structure</h3>
+            <p><strong>Format:</strong> Intensive in-person training with lectures, group exercises, real-world case studies, and practical simulations.</p>
+            <p><strong>Duration Options:</strong> 4-day comprehensive workshop, 5-day intensive course, or custom corporate programs tailored to organizational needs.</p>
+            <div class="badge-duration"><i class="fas fa-chalkboard-user"></i> Hands-on simulations & role-play scenarios</div>
+        </div>
+    </div>
+
+    <!-- Detailed workshop timeline (4-day core) -->
+    <div class="workshop-timeline">
+        <h3 style="font-family:'Playfair Display'; margin-bottom: 25px; text-align: center;">✦ 4-Day Workshop Curriculum ✦</h3>
+        
+        <div class="timeline-item">
+            <div class="timeline-day">Day 1</div>
+            <div class="timeline-content">
+                <h4>Hospitality Protocol Foundations</h4>
+                <p>Importance of protocol in hospitality • Etiquette for international and local guests • Cultural sensitivity and first impressions • Understanding guest psychology and expectations • The art of welcome and farewell rituals.</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-day">Day 2</div>
+            <div class="timeline-content">
+                <h4>Elite Guest Management</h4>
+                <p>VIP and dignitary handling protocols • Greeting, seating, and precedence (order of importance) • Managing guest expectations with discretion • Security considerations for high-profile visitors • Personalized service strategies.</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-day">Day 3</div>
+            <div class="timeline-content">
+                <h4>Event & Reception Excellence</h4>
+                <p>Organizing formal and informal events • Table settings, service styles, and silver service techniques • Managing guest lists, RSVPs, and seating arrangements • Coordination with culinary and banquet teams • Protocol for toasts, speeches, and cultural nuances.</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-day">Day 4</div>
+            <div class="timeline-content">
+                <h4>Concierge Mastery & Practical Simulation</h4>
+                <p>The art of concierge service • Handling special requests with creativity and efficiency • Problem solving for guest satisfaction • Real-life scenario role-plays • Group feedback and improvement session • Capstone practical assessment.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- additional offerings: 5-day intensive & custom workshops -->
+    <div class="two-col-split">
+        <div>
+            <h3><i class="fas fa-gem"></i> Intensive Protocol & Guest Management Course</h3>
+            <p><strong>5-Day Comprehensive Format</strong> — mirroring international standards for hospitality leaders:</p>
+            <ul class="learning-list">
+                <li><i class="fas fa-check"></i> Professional protocol and etiquette mastery</li>
+                <li><i class="fas fa-check"></i> Cross-cultural guest management strategies</li>
+                <li><i class="fas fa-check"></i> VIP event planning and execution</li>
+                <li><i class="fas fa-check"></i> Communication and media relations for hospitality executives</li>
+                <li><i class="fas fa-check"></i> Post-event reporting and guest feedback analysis</li>
+            </ul>
+            <div class="badge-duration" style="margin-top:15px;">Certification: Advanced Hospitality Protocol Diploma</div>
+        </div>
+        <div>
+            <h3><i class="fas fa-building"></i> Custom & Corporate Workshops</h3>
+            <p>Tailored programs for hotels, resorts, event venues, and corporate hospitality teams. Designed to address specific operational challenges and elevate service standards.</p>
+            <ul class="learning-list">
+                <li><i class="fas fa-chart-line"></i> Needs assessment & pre-training audit</li>
+                <li><i class="fas fa-users"></i> Bespoke curriculum aligned with brand standards</li>
+                <li><i class="fas fa-clock"></i> Flexible duration: 1–5 days depending on focus areas</li>
+                <li><i class="fas fa-certificate"></i> Post-training support & performance tracking</li>
+            </ul>
+            <div class="badge-duration">Ideal for hotel chains, government hospitality units, and luxury service providers</div>
+        </div>
+    </div>
+
+    <!-- methodology highlights -->
+    <div class="highlight-box">
+        <h3 style="font-family:'Playfair Display'; margin-bottom: 15px; text-align: center;">Methodology: Theory Meets Practice</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 25px; text-align: center;">
+            <div><i class="fas fa-chalkboard" style="font-size: 1.8rem; color: var(--gold);"></i><br><strong>Interactive Lectures</strong><br><span style="font-size:0.7rem;">Industry expert insights</span></div>
+            <div><i class="fas fa-users" style="font-size: 1.8rem; color: var(--gold);"></i><br><strong>Group Exercises</strong><br><span style="font-size:0.7rem;">Collaborative problem solving</span></div>
+            <div><i class="fas fa-briefcase" style="font-size: 1.8rem; color: var(--gold);"></i><br><strong>Case Studies</strong><br><span style="font-size:0.7rem;">Real-world hospitality scenarios</span></div>
+            <div><i class="fas fa-theater-masks" style="font-size: 1.8rem; color: var(--gold);"></i><br><strong>Practical Simulations</strong><br><span style="font-size:0.7rem;">Role-play & feedback sessions</span></div>
+        </div>
+    </div>
+
+    <!-- key learning areas tags -->
+    <div class="modules-grid">
+        <span class="module-tag">Cultural Sensitivity</span>
+        <span class="module-tag">VIP Precedence Protocol</span>
+        <span class="module-tag">Table Setting & Service</span>
+        <span class="module-tag">Concierge Problem-Solving</span>
+        <span class="module-tag">Guest Psychology</span>
+        <span class="module-tag">Event Logistics</span>
+        <span class="module-tag">Crisis Communication</span>
+        <span class="module-tag">Media Relations</span>
+        <span class="module-tag">Post-Event Reporting</span>
+    </div>
+
+    <!-- benefits & outcomes -->
+    <div class="info-grid" style="margin-top: 20px;">
+        <div class="info-card">
+            <h3><i class="fas fa-trophy"></i> Key Outcomes</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-check-circle"></i> Mastery of international hospitality protocols</li>
+                <li><i class="fas fa-check-circle"></i> Confidence in handling VIPs and dignitaries</li>
+                <li><i class="fas fa-check-circle"></i> Enhanced cultural intelligence for diverse guest profiles</li>
+                <li><i class="fas fa-check-circle"></i> Practical skills in event coordination and table service</li>
+                <li><i class="fas fa-check-circle"></i> Improved guest satisfaction and loyalty metrics</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3><i class="fas fa-certificate"></i> Certification & Recognition</h3>
+            <p>Participants receive a Certificate of Completion from Abuja Protocol Academy, recognized by leading hospitality institutions and corporate organizations. Graduates join an exclusive alumni network of hospitality professionals across West Africa.</p>
+            <div class="badge-duration"><i class="fas fa-globe"></i> Aligned with international hospitality standards</div>
+        </div>
+    </div>
+
+    <!-- practical simulation highlight -->
+    <div style="background: rgba(212,175,55,0.03); border-radius: 24px; padding: 30px; margin: 40px 0;">
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+            <div style="flex: 1; min-width: 200px;">
+                <i class="fas fa-handshake" style="font-size: 2.5rem; color: var(--gold);"></i>
+                <h3 style="margin: 15px 0;">Real-Life Scenario Simulations</h3>
+                <p style="font-size: 0.85rem; color: #BBB;">Our hallmark practical session immerses participants in authentic hospitality situations: managing a difficult VIP arrival, resolving a concierge crisis, coordinating a last-minute high-profile event, and delivering flawless service under pressure. Immediate feedback from expert facilitators ensures lasting skill retention.</p>
+            </div>
+            <div style="flex: 1; min-width: 200px; text-align: center;">
+                <i class="fas fa-comments" style="font-size: 2.5rem; color: var(--gold);"></i>
+                <h3 style="margin: 15px 0;">Group Feedback & Improvement</h3>
+                <p style="font-size: 0.85rem; color: #BBB;">Collaborative debrief sessions after each simulation allow participants to learn from peers, refine techniques, and build a supportive network of hospitality professionals committed to excellence.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- pricing note removed as requested - no prices displayed -->
+    <!-- CTA without prices -->
+    <div id="enquire" class="cta-block">
+        <i class="fas fa-champagne-glasses" style="font-size: 2.2rem; color: var(--gold); margin-bottom: 15px;"></i>
+        <h2 style="font-family: 'Playfair Display'; font-size: 1.8rem;">Elevate Your Hospitality Standards</h2>
+        <p style="max-width: 650px; margin: 15px auto; color:#BBB;">Transform your team into ambassadors of excellence. Contact us for workshop schedules, group bookings, and custom corporate solutions tailored to your organization's unique needs.</p>
+        <a href="contact.html" class="btn-outline" style="margin-top: 10px;">✦ REQUEST PROPOSAL ✦</a>
+        
+        <p style="font-size: 0.65rem; color: #777; margin-top: 15px;">Group discounts available for teams of 5+ | Custom curriculum design for hotels & resorts</p>
+    </div>
+
+    <footer>
+        <div>© 2026 ABUJA PROTOCOL ACADEMY — Hospitality & Guest Management Division</div>
+        <div style="color: var(--gold)">SERVICE BEYOND EXPECTATION</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+
+    window.addEventListener('scroll', () => { if (window.scrollY > 40) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+    menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+    programsToggle.addEventListener('click', (e) => { if (window.innerWidth <= 768) { e.preventDefault(); programsDropdown.classList.toggle('mobile-open'); } });
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => { link.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('active'); programsDropdown.classList.remove('mobile-open'); }); });
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Abuja Protocol Academy | Cabin Crew Workshop | Diplomatic Excellence</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #080808;
+            --dark-grey: #121212;
+            --gold: #a4a1a1;
+            --gold-muted: rgba(212, 175, 55, 0.2);
+            --soft-white: #E5E5E5;
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--black);
+            color: var(--soft-white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -1;
+            filter: brightness(0.3) grayscale(0.4);
+        }
+        
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, var(--black) 95%);
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- NAVIGATION --- */
+        .header-nav { position: sticky; top: 25px; z-index: 1000; }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 100px;
+            padding: 10px 15px 10px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled { background: rgba(0, 0, 0, 0.95); border-color: var(--gold-muted); transform: scale(0.98); }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #FFF;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            z-index: 1101;
+        }
+
+        .logo-icon { width: 32px; height: 32px; background: var(--gold); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; color: black; font-size: 0.8rem; }
+        .logo-icon img { max-width: 100%; height: auto; }
+
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-link-item {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .nav-link-item:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0F0F0F;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 240px;
+            padding: 15px 0;
+            margin-top: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+        @media (min-width: 769px) {
+            .nav-links li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        }
+        .dropdown-menu a { display: block; padding: 12px 25px; color: #AAA; text-decoration: none; font-size: 0.7rem; transition: 0.3s; }
+        .dropdown-menu a:hover { color: var(--gold); background: rgba(212, 175, 55, 0.05); padding-left: 30px; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1101; padding: 10px; }
+        .bar { width: 22px; height: 1.5px; background: var(--gold); transition: var(--transition); }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 100%; height: 100vh;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-link-item { font-size: 1.1rem; padding: 15px; }
+            .dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; display: none; background: transparent; border: none; box-shadow: none; padding: 0; margin-top: 0; width: 100%; }
+            .dropdown-menu.mobile-open { display: block; }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        }
+
+        /* page specific */
+        .workshop-hero { padding: 120px 0 60px; max-width: 900px; }
+        .section-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); display: inline-block; margin-bottom: 20px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+        .gold-text { color: var(--gold); }
+        .info-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 40px; margin: 60px 0; }
+        .info-card { background: rgba(18,18,18,0.7); border-left: 3px solid var(--gold); padding: 28px; border-radius: 16px; backdrop-filter: blur(4px); }
+        .info-card h3 { font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; }
+        .info-card p, .info-card li { color: #CCC; font-size: 0.85rem; line-height: 1.6; }
+        .learning-list { list-style: none; margin-top: 15px; }
+        .learning-list li { margin-bottom: 12px; display: flex; gap: 12px; align-items: baseline; }
+        .learning-list li i { color: var(--gold); font-size: 0.7rem; margin-top: 4px; min-width: 20px; }
+        .image-showcase { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 50px 0; }
+        .showcase-img { border-radius: 20px; overflow: hidden; height: 220px; }
+        .showcase-img img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); filter: brightness(0.75); }
+        .showcase-img:hover img { filter: brightness(1); transform: scale(1.03); }
+        .duration-badge { background: rgba(212,175,55,0.2); display: inline-block; padding: 5px 14px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; margin-top: 15px; }
+        .two-col-split { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin: 50px 0; background: var(--dark-grey); border-radius: 28px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); }
+        .module-tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+        .module-tag { background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.7rem; }
+        .cert-badge { display: flex; align-items: center; gap: 15px; background: linear-gradient(145deg, #111, #0a0a0a); border-radius: 20px; padding: 20px 25px; margin: 40px 0; border-left: 4px solid var(--gold); }
+        footer { padding: 40px 0; border-top: 1px solid #222; display: flex; justify-content: space-between; font-size: 0.6rem; color: #555; font-family: 'Space Mono'; margin-top: 60px; }
+        @media (max-width: 768px) { .info-grid, .two-col-split { grid-template-columns: 1fr; } .image-showcase { grid-template-columns: 1fr; } }
+        .btn-outline { display: inline-block; padding: 12px 32px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; margin-top: 20px; }
+        .btn-outline:hover { background: var(--gold); color: black; }
+    </style>
+</head>
+<body>
+<div class="hero-bg">
+    <img src="https://i.pinimg.com/736x/fc/87/a3/fc87a3826c8cbc2619f883ae927d916a.jpg " alt="Aviation backdrop">
+</div>
+
+<div class="container">
+    <header class="header-nav">
+        <nav class="navbar" id="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="https://placehold.co/32x32/cca aff/111?text=APA" alt="APA Logo" style="max-width:100%; height:auto;"></div>
+                <span>ABUJA PROTOCOL ACADEMY</span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" class="nav-link-item">HOME</a></li>
+                <li><a href="about.html" class="nav-link-item">ABOUT</a></li>
+                <li class="has-dropdown">
+                    <a href="programs.html" class="nav-link-item" id="programs-toggle">PROGRAMS <i class="fas fa-chevron-down" style="font-size: 0.5rem;"></i></a>
+                    <div class="dropdown-menu" id="programs-dropdown">
+                        <a href="Goverment.html">Government Solutions</a>
+                        <a href="Hospitality.html">Hospitality Elite</a>
+                        <a href="Crisis.html">Crisis Management</a>
+                        <a href="Executive.html">Executive Upskilling</a>
+                        <a href="YouthProtocol.html">Youth Protocol</a>
+                        <a href="CabinCrew.html">Cabin Crew Workshop</a>
+                    </div>
+                </li>
+                  <li><a href="mission.html" class="nav-link-item">MISSION</a></li>
+                <li><a href="instructor.html" class="nav-link-item">  HOW TO APPLY  </a></li>
+                <li><a href="instructor.html" class="nav-link-item">  INSTRUCTORS </a></li>
+                <li><a href="contact.html" class="nav-link-item cta-nav">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="workshop-hero">
+        <span class="section-tag">✦ AVIATION EXCELLENCE ✦</span>
+        <h1>Cabin Crew & <span class="gold-text">Air Hostess</span> Workshop</h1>
+        <p style="color:#BBB; font-size:1rem; line-height:1.6; max-width:750px;">An intensive, practical program introducing aspiring aviation professionals to the core skills, safety protocols, and world-class service standards required for a successful career in the skies. Designed with leading aviation benchmarks and Nigerian regulatory context.</p>
+        <a href="#apply" class="btn-outline" style="margin-top:25px;">✦ DOWNLOAD PROGRAM BROCHURE ✦ </a>
+    </section>
+
+    <!-- Image showcase 1 -->
+   
+    <!-- Key info grid -->
+    <div class="info-grid">
+        <div class="info-card">
+            <h3><i class="fas fa-users" style="color:var(--gold)"></i> Who Should Attend</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-check-circle"></i> Aspiring air hostesses & cabin crew</li>
+                <li><i class="fas fa-check-circle"></i> Customer service professionals seeking aviation roles</li>
+                <li><i class="fas fa-check-circle"></i> Young graduates & career changers interested in travel industry</li>
+                <li><i class="fas fa-check-circle"></i> Hospitality professionals aiming for in-flight excellence</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3><i class="fas fa-clock"></i> Workshop Format</h3>
+            <p><strong>Duration:</strong> 4 days intensive (32 hours total) — practical & classroom mix</p>
+            <p><strong>Format:</strong> In-person at Abuja Protocol Academy HQ, with full mock-up cabin sessions, evacuation drills, and airport familiarization.</p>
+            <div class="duration-badge"><i class="fas fa-calendar-alt"></i> Next cohort: contact admissions for dates</div>
+        </div>
+    </div>
+
+    <!-- learning areas + safety -->
+    <div class="two-col-split">
+        <div>
+            <h3 style="font-family:'Playfair Display'; margin-bottom:20px;"><i class="fas fa-book-open"></i> Key Learning Areas</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-plane"></i> <strong>Aviation & Cabin Crew Roles:</strong> Industry overview, professional responsibilities, airline operations</li>
+                <li><i class="fas fa-fire-extinguisher"></i> <strong>Safety & Emergency Procedures:</strong> Aircraft familiarization, door operations, evacuation slide, fire & smoke training, ditching/sea drills</li>
+                <li><i class="fas fa-heartbeat"></i> <strong>First Aid & Aviation Medicine:</strong> Basic life support, medical emergencies in-flight</li>
+                <li><i class="fas fa-hand-sparkles"></i> <strong>Passenger Service & Customer Care:</strong> In-flight procedures, conflict resolution, cultural sensitivity</li>
+                <li><i class="fas fa-users-between"></i> <strong>Crew Resource Management:</strong> Teamwork, leadership, pilot incapacitation protocols</li>
+                <li><i class="fas fa-user-tie"></i> <strong>Professional Image & Grooming:</strong> Health, well-being, presentation, confidence building</li>
+                <li><i class="fas fa-gavel"></i> <strong>Regulatory Compliance:</strong> NCAA regulations, dangerous goods, security protocols</li>
+            </ul>
+        </div>
+        <div>
+            <h3 style="font-family:'Playfair Display'; margin-bottom:20px;"><i class="fas fa-chalkboard-user"></i> Practical Sessions</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-bolt"></i> Mock fire-fighting & evacuation drills (realistic cabin mock-up)</li>
+                <li><i class="fas fa-people-arrows"></i> Crowd control & emergency leadership</li>
+                <li><i class="fas fa-chalkboard"></i> Passenger safety demonstrations & brace positions</li>
+                <li><i class="fas fa-building"></i> Airport/aircraft familiarization tour</li>
+                <li><i class="fas fa-microphone-alt"></i> Service role-play: handling VIPs and difficult passengers</li>
+            </ul>
+            <div class="module-tag-cloud">
+                <span class="module-tag">Evacuation drills</span>
+                <span class="module-tag">CRM simulation</span>
+                <span class="module-tag">Grooming standards</span>
+                <span class="module-tag">NCAA compliance</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- entry requirements + certification section with image -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin:40px 0;">
+        <div class="info-card" style="background:#111;">
+            <h3><i class="fas fa-id-card"></i> Entry Requirements</h3>
+            <ul class="learning-list">
+                <li><i class="fas fa-check"></i> Minimum age: 18 years</li>
+                <li><i class="fas fa-check"></i> O’Level (WAEC/NECO) or higher qualification</li>
+                <li><i class="fas fa-check"></i> Good health, professional grooming & basic communication skills</li>
+                <li><i class="fas fa-check"></i> Passion for service & aviation excellence</li>
+            </ul>
+        </div>
+        <div class="info-card" style="background:#111;">
+            <h3><i class="fas fa-graduation-cap"></i> Certification & Recognition</h3>
+            <p>Graduates receive a <strong>Certificate of Completion</strong> from Abuja Protocol Academy, meeting industry-recognized standards and preparing participants for airline recruitment processes and NCAA licensing pathways.</p>
+            <div style="margin-top:15px;"><i class="fas fa-trophy" style="color:var(--gold)"></i> <span style="font-size:0.8rem;">Hands-on practical training for immediate employability</span></div>
+        </div>
+    </div>
+
+    <!-- full certification card with networking benefits -->
+    <div class="cert-badge">
+        <i class="fas fa-wings" style="font-size: 2.5rem; color: var(--gold);"></i>
+        <div>
+            <h4 style="font-size:1.1rem;">Career Launch Benefits</h4>
+            <p style="font-size:0.8rem;">Preparation for airline recruitment, networking with aviation professionals, access to alumni community, and enhanced soft skills for global aviation roles.</p>
+        </div>
+    </div>
+
+    <!-- more imagery: cabin crew glamour + professionalism -->
+    <div class="image-showcase">
+        <div class="showcase-img"><img src="https://i.pinimg.com/1200x/5c/7e/7d/5c7e7deaa56f3ed0d9a8e91443c0c7c6.jpg" alt="Cabin crew presentation" onerror="this.src='https://placehold.co/600x400/222/aaa?text=Crew+Service'"></div>
+        <div class="showcase-img"><img src="https://i.pinimg.com/1200x/2e/f2/c4/2ef2c41daa1bf49a5f33c84d8d85dc0b.jpg" alt="Evacuation drill" onerror="this.src='https://placehold.co/600x400/222/aaa?text=Safety+Drill'"></div>
+        <div class="showcase-img"><img src="https://i.pinimg.com/1200x/a1/b3/1f/a1b31f5aee6a79b6e46df343b976e4af.jpg" alt="In-flight service training" onerror="this.src='https://placehold.co/600x400/222/aaa?text=Passenger+Care'"></div>
+    </div>
+
+    <!-- curriculum in detail: workshop modules expanded -->
+    <div style="margin: 40px 0;">
+        <div class="section-tag" style="text-align:center; display:block;">✦ COMPREHENSIVE CURRICULUM ✦</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:30px;">
+            <div style="background:rgba(0,0,0,0.4); border-radius:20px; padding:20px; border:1px solid rgba(212,175,55,0.2);">
+                <i class="fas fa-hard-hat" style="color:var(--gold); font-size:1.5rem;"></i>
+                <h4 style="margin:15px 0 10px;">Day 1: Aviation Foundation</h4>
+                <p style="font-size:0.75rem;">Industry intro, roles & responsibilities, professional ethics, airline branding, uniform standards, introduction to NCAA regulations.</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); border-radius:20px; padding:20px; border:1px solid rgba(212,175,55,0.2);">
+                <i class="fas fa-life-ring" style="color:var(--gold); font-size:1.5rem;"></i>
+                <h4 style="margin:15px 0 10px;">Day 2: Safety & Emergency</h4>
+                <p style="font-size:0.75rem;">Aircraft doors & exits, evacuation drills, fire & smoke simulation, ditching procedures, first aid/CPR certification basics.</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); border-radius:20px; padding:20px; border:1px solid rgba(212,175,55,0.2);">
+                <i class="fas fa-concierge-bell" style="color:var(--gold); font-size:1.5rem;"></i>
+                <h4 style="margin:15px 0 10px;">Day 3: Service Excellence</h4>
+                <p style="font-size:0.75rem;">In-flight service procedures, cultural sensitivity, handling difficult passengers, conflict resolution, fine dining etiquette at altitude.</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.4); border-radius:20px; padding:20px; border:1px solid rgba(212,175,55,0.2);">
+                <i class="fas fa-briefcase" style="color:var(--gold); font-size:1.5rem;"></i>
+                <h4 style="margin:15px 0 10px;">Day 4: Crew Resource & Assessment</h4>
+                <p style="font-size:0.75rem;">CRM teamwork, pilot incapacitation drills, grooming & final assessment, interview preparation & airline recruitment insights.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional features: mock drills, guest speakers -->
+    <div class="two-col-split" style="background: #0c0c0c;">
+        <div>
+            <i class="fas fa-chalkboard" style="color:var(--gold); font-size:1.8rem; margin-bottom:15px; display:inline-block;"></i>
+            <h3>World-class Training Environment</h3>
+            <p>Our workshop integrates state-of-the-art cabin mock-ups, real aviation equipment, and experienced facilitators who have served in international airlines and Nigerian aviation authorities. You'll experience real-world emergency scenarios and passenger service simulations that mirror airline assessments.</p>
+        </div>
+        <div>
+            <i class="fas fa-handshake" style="color:var(--gold); font-size:1.8rem; margin-bottom:15px; display:inline-block;"></i>
+            <h3>Networking & Placement Support</h3>
+            <p>Participants gain exclusive access to recruitment agencies, airline career fairs, and professional mentorship. Alumni have been placed with domestic and international carriers due to APA's strong industry ties.</p>
+        </div>
+    </div>
+
+    <!-- pricing removed as requested, but show inquiry cta without figures -->
+    <div id="apply" style="text-align:center; margin: 60px 0 40px; background: rgba(212,175,55,0.05); border-radius: 40px; padding: 50px 20px;">
+        <i class="fas fa-plane-departure" style="font-size: 2.2rem; color: var(--gold); margin-bottom: 20px;"></i>
+        <h2 style="font-family: 'Playfair Display'; font-size: 1.8rem;">Ready to Soar?</h2>
+        <p style="max-width: 600px; margin: 15px auto; color:#BBB;">Secure your seat in the next Cabin Crew Intensive Workshop. Limited spots per cohort to ensure personalized training. Contact our admissions team for detailed schedule and registration.</p>
+        <a href="contact.html" class="btn-outline" style="margin-top: 15px;">✦ REQUEST INFORMATION ✦</a>
+        <p style="margin-top: 20px; font-size: 0.7rem;">Email: aviation@abujaprotocol.edu.ng  |  Phone: +234 (0) 812 345 6789</p>
+    </div>
+
+    <footer>
+        <div>© 2026 ABUJA PROTOCOL ACADEMY — Cabin Crew Division</div>
+        <div style="color: var(--gold)">EXCELLENCE ABOVE THE CLOUDS</div>
+    </footer>
+</div>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-list');
+    const programsToggle = document.getElementById('programs-toggle');
+    const programsDropdown = document.getElementById('programs-dropdown');
+
+    window.addEventListener('scroll', () => { if (window.scrollY > 40) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+    menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+    programsToggle.addEventListener('click', (e) => { if (window.innerWidth <= 768) { e.preventDefault(); programsDropdown.classList.toggle('mobile-open'); } });
+    document.querySelectorAll('.nav-links a:not(#programs-toggle)').forEach(link => { link.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('active'); programsDropdown.classList.remove('mobile-open'); }); });
+</script>
+</body>
+</html>
